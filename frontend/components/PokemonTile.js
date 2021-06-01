@@ -3,7 +3,7 @@ import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-const PokemonTile = ({ pokemon: { name, types, image, isFavorite, toggleFavorite } }) => {
+const PokemonTile = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
   return (
     <ClickableTile className={styles.tile}>
       <Link href={name}>
