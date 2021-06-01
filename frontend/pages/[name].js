@@ -47,7 +47,6 @@ export async function getStaticPaths() {
     `,
   });
 
-  console.log(data);
   const paths = data.pokemons.edges.map(pokemon => ({ params: { name: pokemon.name } }));
   return {
     paths,

@@ -10,5 +10,13 @@
       display: block;
     }
   }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    .favorite :focus {
+      border: none;
+      border-color: transparent;
+      outline-color: transparent;
+    }
+  }
 }
-
