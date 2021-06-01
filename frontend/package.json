@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
+    "@carbon/colors": "^10.26.0",
     "@carbon/icons-react": "10.22.0",
     "carbon-components": "10.25.0",
     "carbon-components-react": "7.25.0",
