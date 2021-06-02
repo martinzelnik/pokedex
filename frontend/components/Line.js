@@ -1,9 +1,9 @@
-import styles from '../styles/PokemonLine.module.scss';
+import styles from '../styles/Line.module.scss';
 import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-const PokemonLine = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
+const Line = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
   return (
     <ClickableTile className={styles.line}>
       <Link href={name}>
@@ -24,4 +24,4 @@ const PokemonLine = ({ pokemon: { name, types, image, isFavorite }, toggleFavori
   );
 };
 
-export default PokemonLine;
+export default Line;

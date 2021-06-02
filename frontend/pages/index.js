@@ -1,10 +1,10 @@
-import styles from '../styles/Home.module.scss';
+import styles from '../styles/Pokemons.module.scss';
 import { gql, useMutation } from '@apollo/client';
 import client from '../apollo-client';
-import PokemonCard from '../components/PokemonCard';
+import Card from '../components/Card';
 import Filter from '../components/Filter';
 import { TABS, useAppContext, VIEWS } from '../context/AppProvider';
-import PokemonLine from '../components/PokemonLine';
+import Line from '../components/Line';
 
 const ADD_TO_FAVORITES = gql`
   mutation AddToFavorites($id: ID!) {
@@ -22,7 +22,7 @@ const REMOVE_FROM_FAVORITES = gql`
   }
 `;
 
-export default function Home({ pokemons, pokemonTypes }) {
+export default function Pokemons({ pokemons, pokemonTypes }) {
   // const router = useRouter();
 
   const { activeTab, view } = useAppContext();
@@ -57,9 +57,9 @@ export default function Home({ pokemons, pokemonTypes }) {
         {pokemons.map(pokemon => {
           const { id, isFavorite } = pokemon;
           if (view === VIEWS.GRID) {
-            return <PokemonCard toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
+            return <Card toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
           } else if (view === VIEWS.LIST) {
-            return <PokemonLine toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
+            return <Line toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
           }
         })}
       </div>

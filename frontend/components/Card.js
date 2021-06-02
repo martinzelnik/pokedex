@@ -1,9 +1,9 @@
-import styles from '../styles/PokemonCard.module.scss';
+import styles from '../styles/Card.module.scss';
 import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-const PokemonCard = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
+export default function Card({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) {
   return (
     <ClickableTile className={styles.card}>
       <Link href={name}>
@@ -15,14 +15,11 @@ const PokemonCard = ({ pokemon: { name, types, image, isFavorite }, toggleFavori
         <Link href={name}>
           <div>
             <h5>{name}</h5>
-
-            <p>{types.join(', ')}</p>
+            {types && <p>{types.join(', ')}</p>}
           </div>
         </Link>
         <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
       </div>
     </ClickableTile>
   );
-};
-
-export default PokemonCard;
+}

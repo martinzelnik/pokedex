@@ -7,13 +7,16 @@
 
 .grid {
   @extend %flex-container;
-  justify-content: space-around;
-
+  justify-content: center;
 }
 
 .list {
   @extend %flex-container;
   flex-direction: column;
+}
+
+.evolutions {
+  @extend %flex-container;
 }
 
 
