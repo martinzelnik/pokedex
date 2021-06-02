@@ -3,7 +3,7 @@ import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-export default function Card({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) {
+export default function Card({ pokemon: { id, name, types, image, isFavorite }, toggleFavorite }) {
   return (
     <ClickableTile className={styles.card}>
       <Link href={name}>
@@ -18,7 +18,7 @@ export default function Card({ pokemon: { name, types, image, isFavorite }, togg
             {types && <p>{types.join(', ')}</p>}
           </div>
         </Link>
-        <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
+        <FavoriteButton id={id} isFavorite={isFavorite} onClick={toggleFavorite} />
       </div>
     </ClickableTile>
   );

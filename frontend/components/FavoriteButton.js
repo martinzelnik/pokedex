@@ -1,9 +1,26 @@
 import styles from '../styles/FavoriteButton.module.scss';
 import { Star32, StarFilled32 } from '@carbon/icons-react';
+import { useMutation } from '@apollo/client';
+import { ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES } from '../graphql';
 
-export default function FavoriteButton({ isFavorite, ...props }) {
+export default function FavoriteButton({ id, isFavorite }) {
+  const [addToFavs] = useMutation(ADD_TO_FAVORITES);
+  const [removeFromFavs] = useMutation(REMOVE_FROM_FAVORITES);
+
+  const toggleFavorite = (id, isFavorite) => {
+    if (isFavorite) {
+      removeFromFavs({
+        variables: { id },
+      });
+    } else {
+      addToFavs({
+        variables: { id },
+      });
+    }
+  };
+
   return (
-    <button className={styles['favorite-button']} {...props}>
+    <button onClick={() => toggleFavorite(id, isFavorite)} className={styles['favorite-button']}>
       {isFavorite ? <StarFilled32 /> : <Star32 />}
     </button>
   );
