@@ -1,13 +1,13 @@
-import styles from '../styles/PokemonTile.module.scss';
+import styles from '../styles/PokemonCard.module.scss';
 import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-const PokemonTile = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
+const PokemonCard = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
   return (
-    <ClickableTile className={styles.tile}>
+    <ClickableTile className={styles.card}>
       <Link href={name}>
-        <div className={styles['image-container']}>
+        <div className={styles['img-container']}>
           <img src={image} />
         </div>
       </Link>
@@ -19,12 +19,10 @@ const PokemonTile = ({ pokemon: { name, types, image, isFavorite }, toggleFavori
             <p>{types.join(', ')}</p>
           </div>
         </Link>
-        <div className={styles.info}>
-          <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
-        </div>
+        <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
       </div>
     </ClickableTile>
   );
 };
 
-export default PokemonTile;
+export default PokemonCard;

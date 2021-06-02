@@ -1,0 +1,26 @@
+.line {
+  display: flex;
+  justify-content: space-between;
+  height: 8rem;
+  width: 100%;
+  .img-container {
+    width: 10rem;
+    background-color: white;
+    text-align: center;
+    display: block;
+    margin-right: 0.5rem;
+    img {
+      max-height: 100%;
+    }
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 0.5rem;
+  }
+  .favorite :focus {
+    border: none;
+    border-color: transparent;
+    outline-color: transparent;
+  }
+}
