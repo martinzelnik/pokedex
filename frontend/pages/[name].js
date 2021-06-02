@@ -1,55 +1,32 @@
+import styles from '../styles/Pokemons.module.scss';
+import { useQuery } from '@apollo/client';
+import DetailCard from '../components/DetailCard';
+import Card from '../components/Card';
 import { useRouter } from 'next/router';
-import { gql } from '@apollo/client';
-import client from '../apollo-client';
+import { FETCH_POKEMON_DETAIL } from '../graphql';
 
-export default function PokemonDetail({ pokemon }) {
+export default function PokemonDetail() {
   const router = useRouter();
-  const { name } = router.query;
-
-  return (
-    <>
-      <h1>{name}</h1>
-      <h3>{pokemon.id}</h3>
-    </>
-  );
-}
-
-export async function getStaticProps({ params: { name } }) {
-  const { data } = await client.query({
-    query: gql`
-      query Pokemon($name: String!) {
-        pokemonByName(name: $name) {
-          id
-          name
-          image
-          isFavorite
-        }
-      }
-    `,
-    variables: { name },
+  const { loading, error, data, refetch } = useQuery(FETCH_POKEMON_DETAIL, {
+    variables: { name: router.query.name },
+    fetchPolicy: 'network-only',
   });
 
-  return {
-    props: { pokemon: data.pokemonByName },
-  };
-}
+  const pokemon = data?.pokemonByName;
 
-export async function getStaticPaths() {
-  const { data } = await client.query({
-    query: gql`
-      query {
-        pokemons(query: { limit: -1, offset: 0 }) {
-          edges {
-            name
-          }
-        }
-      }
-    `,
-  });
-
-  const paths = data.pokemons.edges.map(pokemon => ({ params: { name: pokemon.name } }));
-  return {
-    paths,
-    fallback: false,
-  };
+  if (pokemon) {
+    return (
+      <div>
+        <DetailCard pokemon={pokemon} />
+        <h4>Evolutions</h4>
+        <div className={styles.evolutions}>
+          {pokemon.evolutions.map(pokemon => (
+            <Card key={pokemon.id} pokemon={pokemon} />
+          ))}
+        </div>
+      </div>
+    );
+  } else {
+    return null;
+  }
 }

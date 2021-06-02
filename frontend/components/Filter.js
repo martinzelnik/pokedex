@@ -11,12 +11,12 @@ const FETCH_POKEMON_TYPES = gql`
 `;
 
 export default function Filter() {
-  const { setView, setHasFavoritesOnly, searchedValue, setSearchedValue, type, setType } = useAppContext();
+  const { setView, setHasFavoritesOnly, searchedValue, hasFavoritesOnly, setSearchedValue, type, setType } = useAppContext();
 
-  const { loading, error, data, refetch } = useQuery(FETCH_POKEMON_TYPES);
+  const { loading, data } = useQuery(FETCH_POKEMON_TYPES);
   return (
     <div className={styles.filter}>
-      <ContentSwitcher onChange={value => setHasFavoritesOnly(value.index === 1)}>
+      <ContentSwitcher selectedIndex={hasFavoritesOnly ? 1 : 0} onChange={value => setHasFavoritesOnly(value.index === 1)}>
         <Switch text="All" />
         <Switch text="Favourites" />
       </ContentSwitcher>
