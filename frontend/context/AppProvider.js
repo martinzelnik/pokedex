@@ -1,10 +1,5 @@
 import { createContext, useContext, useState } from 'react';
 
-export const TABS = Object.freeze({
-  ALL: 0,
-  FAVORITES: 1,
-});
-
 export const VIEWS = Object.freeze({
   LIST: 'list',
   GRID: 'grid',
@@ -13,14 +8,20 @@ export const VIEWS = Object.freeze({
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const [activeTab, setActiveTab] = useState(TABS.ALL);
   const [view, setView] = useState(VIEWS.GRID);
+  const [searchedValue, setSearchedValue] = useState('');
+  const [type, setType] = useState('');
+  const [hasFavoritesOnly, setHasFavoritesOnly] = useState(false);
 
   let sharedState = {
-    activeTab,
-    setActiveTab,
     view,
     setView,
+    searchedValue,
+    setSearchedValue,
+    type,
+    setType,
+    hasFavoritesOnly,
+    setHasFavoritesOnly,
   };
 
   return <AppContext.Provider value={sharedState}>{children}</AppContext.Provider>;

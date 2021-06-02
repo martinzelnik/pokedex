@@ -1,21 +1,36 @@
 import styles from '../styles/Filter.module.scss';
 import { Button, ContentSwitcher, Select, SelectItem, Switch, TextInput } from 'carbon-components-react';
 import { List16, Grid16 } from '@carbon/icons-react';
-import { TABS, useAppContext, VIEWS } from '../context/AppProvider';
+import { useAppContext, VIEWS } from '../context/AppProvider';
+import { gql, useQuery } from '@apollo/client';
 
-export default function Filter({ pokemonTypes }) {
-  const { setView, setActiveTab } = useAppContext();
+const FETCH_POKEMON_TYPES = gql`
+  query FetchPokemonTypes {
+    pokemonTypes
+  }
+`;
+
+export default function Filter() {
+  const { setView, setHasFavoritesOnly, searchedValue, setSearchedValue, type, setType } = useAppContext();
+
+  const { loading, error, data, refetch } = useQuery(FETCH_POKEMON_TYPES);
   return (
     <div className={styles.filter}>
-      <ContentSwitcher onChange={value => setActiveTab(value.index)}>
-        <Switch name={TABS.ALL} text="All" />
-        <Switch name={TABS.FAVORITES} text="Favourites" />
+      <ContentSwitcher onChange={value => setHasFavoritesOnly(value.index === 1)}>
+        <Switch text="All" />
+        <Switch text="Favourites" />
       </ContentSwitcher>
-      <TextInput placeholder="Search"></TextInput>
-      <Select noLabel>
-        {[
-          <SelectItem text="Type" value="placeholder-item" />,
-          ...pokemonTypes.map(pokemonType => <SelectItem key={pokemonType} text={pokemonType} />),
+      <TextInput
+        value={searchedValue}
+        placeholder="Search"
+        onChange={e => setSearchedValue(e.target.value)}
+      ></TextInput>
+      <Select value={type} onChange={e => setType(e.target.value)} noLabel>
+        {!loading && [
+          <SelectItem key="placeholder-item" text="Type" value="" />,
+          ...data.pokemonTypes.map(pokemonType => (
+            <SelectItem key={pokemonType} text={pokemonType} value={pokemonType} />
+          )),
         ]}
       </Select>
       <div>

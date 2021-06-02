@@ -1,15 +1,29 @@
 import styles from '../styles/Pokemons.module.scss';
-import { gql, useMutation } from '@apollo/client';
-import client from '../apollo-client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import Card from '../components/Card';
 import Filter from '../components/Filter';
-import { TABS, useAppContext, VIEWS } from '../context/AppProvider';
+import { useAppContext, VIEWS } from '../context/AppProvider';
 import Line from '../components/Line';
+
+const FETCH_POKEMONS = gql`
+  query FetchPokemons($searchedValue: String, $type: String, $hasFavoritesOnly: Boolean) {
+    pokemons(query: { limit: 500, search: $searchedValue, filter: { type: $type, isFavorite: $hasFavoritesOnly } }) {
+      edges {
+        id
+        name
+        image
+        types
+        isFavorite
+      }
+    }
+  }
+`;
 
 const ADD_TO_FAVORITES = gql`
   mutation AddToFavorites($id: ID!) {
     favoritePokemon(id: $id) {
       id
+      isFavorite
     }
   }
 `;
@@ -18,73 +32,60 @@ const REMOVE_FROM_FAVORITES = gql`
   mutation RemoveFromFavorites($id: ID!) {
     unFavoritePokemon(id: $id) {
       id
+      isFavorite
     }
   }
 `;
 
-export default function Pokemons({ pokemons, pokemonTypes }) {
-  // const router = useRouter();
-
-  const { activeTab, view } = useAppContext();
+export default function Pokemons() {
+  const { hasFavoritesOnly, view, searchedValue, type } = useAppContext();
 
   const [addToFavs] = useMutation(ADD_TO_FAVORITES);
   const [removeFromFavs] = useMutation(REMOVE_FROM_FAVORITES);
+  console.log(hasFavoritesOnly)
+  const { loading, error, data, refetch } = useQuery(FETCH_POKEMONS, {
+    variables: { searchedValue, type, hasFavoritesOnly },
+  });
 
   const toggleFavorite = (id, isFavorite) => {
     if (isFavorite) {
-      removeFromFavs({ variables: { id } });
+      removeFromFavs({
+        variables: { id },
+        refetchQueries: [{ query: FETCH_POKEMONS, variables: { searchedValue, type, hasFavoritesOnly } }],
+        awaitRefetchQueries: true,
+      });
     } else {
-      addToFavs({ variables: { id } });
+      addToFavs({
+        variables: { id },
+        refetchQueries: [{ query: FETCH_POKEMONS, variables: { searchedValue, type, hasFavoritesOnly } }],
+        awaitRefetchQueries: true,
+      });
     }
   };
 
-  
-  if (activeTab === TABS.FAVORITES) {
-    pokemons = pokemons.filter(pokemon => pokemon.isFavorite);
-  }
-
-  let style
+  let style;
   if (view === VIEWS.GRID) {
     style = styles.grid;
   } else if (view === VIEWS.LIST) {
-    style = styles.list
+    style = styles.list;
   }
- 
+
+  let pokemons = data?.pokemons.edges;
+
   return (
     <>
-      <Filter pokemonTypes={pokemonTypes} />
+      <Filter />
       <div className={style}>
-        {pokemons.map(pokemon => {
-          const { id, isFavorite } = pokemon;
-          if (view === VIEWS.GRID) {
-            return <Card toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
-          } else if (view === VIEWS.LIST) {
-            return <Line toggleFavorite={() => toggleFavorite(id, isFavorite)} key={id} pokemon={pokemon} />;
-          }
-        })}
+        {!loading &&
+          pokemons.map(pokemon => {
+            const { id, isFavorite } = pokemon;
+            if (view === VIEWS.GRID) {
+              return <Card key={id} pokemon={pokemon} toggleFavorite={() => toggleFavorite(id, isFavorite)} />;
+            } else if (view === VIEWS.LIST) {
+              return <Line key={id} pokemon={pokemon} toggleFavorite={() => toggleFavorite(id, isFavorite)} />;
+            }
+          })}
       </div>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  const { data } = await client.query({
-    query: gql`
-      query {
-        pokemons(query: { limit: -1, offset: 0 }) {
-          edges {
-            id
-            name
-            image
-            types
-            isFavorite
-          }
-        }
-        pokemonTypes
-      }
-    `,
-  });
-  return {
-    props: { pokemons: data.pokemons.edges, pokemonTypes: data.pokemonTypes },
-  };
 }
