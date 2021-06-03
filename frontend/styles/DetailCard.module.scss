@@ -1,24 +1,9 @@
+@import './Card.module.scss';
+
 .detail-card {
+  @include card($img-height: 20rem);
   margin: 0.5rem 0;
-  .img-container {
-    height: 20rem;
-    background-color: white;
-    text-align: center;
-    display: block;
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
-  .info {
-    display: flex;
-    justify-content: space-between;
-    .favorite :focus {
-      border: none;
-      border-color: transparent;
-      outline-color: transparent;
-    }
-  }
+
   .chart {
     p {
       width: 100%;
