@@ -1,5 +1,6 @@
-%flex-container {
-  padding: 0.5rem;
+$padding: 0.5rem;
+
+%flex-container {  
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -7,16 +8,23 @@
 
 .grid {
   @extend %flex-container;
+  padding: $padding;
   justify-content: center;
 }
 
 .list {
   @extend %flex-container;
+  padding: $padding;
   flex-direction: column;
 }
 
 .evolutions {
   @extend %flex-container;
+}
+
+.detail {
+  max-width: 50rem;
+  margin: 0 auto;
 }
 
 

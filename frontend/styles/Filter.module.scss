@@ -1,18 +1,15 @@
 @import '@carbon/colors/scss/colors';
 
-%flex-container {
-  padding: 0.5rem;
+.filter {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.filter {
-  @extend %flex-container;
   background-color: $carbon--white-0;
   justify-content: center;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1;
+  padding: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
 }

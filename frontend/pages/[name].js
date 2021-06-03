@@ -7,7 +7,7 @@ import { FETCH_POKEMON_DETAIL } from '../graphql';
 
 export default function PokemonDetail() {
   const router = useRouter();
-  const { loading, error, data, refetch } = useQuery(FETCH_POKEMON_DETAIL, {
+  const { data } = useQuery(FETCH_POKEMON_DETAIL, {
     variables: { name: router.query.name },
     fetchPolicy: 'network-only',
   });
@@ -15,15 +15,20 @@ export default function PokemonDetail() {
   const pokemon = data?.pokemonByName;
 
   if (pokemon) {
+    const { evolutions } = pokemon;
     return (
-      <div>
+      <div className={styles.detail}>
         <DetailCard pokemon={pokemon} />
-        <h4>Evolutions</h4>
-        <div className={styles.evolutions}>
-          {pokemon.evolutions.map(pokemon => (
-            <Card key={pokemon.id} pokemon={pokemon} />
-          ))}
-        </div>
+        {evolutions.length > 0 && (
+          <>
+            <h4>Evolutions</h4>
+            <div className={styles.evolutions}>
+              {pokemon.evolutions.map(pokemon => (
+                <Card key={pokemon.id} pokemon={pokemon} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   } else {
