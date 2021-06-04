@@ -42,6 +42,7 @@ export const FETCH_POKEMON_DETAIL = gql`
       maxCP
       maxHP
       isFavorite
+      sound
       weight {
         minimum
         maximum

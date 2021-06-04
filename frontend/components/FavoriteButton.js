@@ -1,4 +1,4 @@
-import styles from '../styles/FavoriteButton.module.scss';
+import styles from '../styles/TransparentButton.module.scss';
 import { Star32, StarFilled32 } from '@carbon/icons-react';
 import { useMutation } from '@apollo/client';
 import { ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES } from '../graphql';
@@ -20,7 +20,7 @@ export default function FavoriteButton({ id, isFavorite }) {
   };
 
   return (
-    <button onClick={() => toggleFavorite(id, isFavorite)} className={styles['favorite-button']}>
+    <button onClick={() => toggleFavorite(id, isFavorite)} className={styles['transparent-button']}>
       {isFavorite ? <StarFilled32 /> : <Star32 />}
     </button>
   );
