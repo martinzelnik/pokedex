@@ -3,7 +3,7 @@ import { ClickableTile } from 'carbon-components-react';
 import Link from 'next/link';
 import FavoriteButton from './FavoriteButton';
 
-const Line = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) => {
+const Line = ({ pokemon: { id, name, types, image, isFavorite }, toggleFavorite }) => {
   return (
     <ClickableTile className={styles.line}>
       <Link href={name}>
@@ -18,7 +18,7 @@ const Line = ({ pokemon: { name, types, image, isFavorite }, toggleFavorite }) =
         </div>
       </Link>
       <div>
-        <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
+        <FavoriteButton id={id} isFavorite={isFavorite} onClick={toggleFavorite} />
       </div>
     </ClickableTile>
   );
